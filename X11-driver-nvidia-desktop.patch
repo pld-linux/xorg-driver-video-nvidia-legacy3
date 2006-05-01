@@ -1,0 +1,14 @@
+--- NVIDIA-Linux-x86-1.0-8756-pkg1/usr/share/applications/nvidia-settings.desktop~	2006-03-30 01:02:19.000000000 +0200
++++ NVIDIA-Linux-x86-1.0-8756-pkg1/usr/share/applications/nvidia-settings.desktop	2006-05-01 13:42:59.794384000 +0200
+@@ -2,7 +2,9 @@
+ Type=Application
+ Encoding=UTF-8
+ Name=NVIDIA X Server Settings
++Name[pl]=Ustawienia X serwera NVidii
+ Comment=Configure NVIDIA X Server Settings
+-Exec=__UTILS_PATH__/nvidia-settings
+-Icon=__DOCS_PATH__/nvidia-settings.png
++Comment[pl]=Konfiguracja ustawień X serwera NVidii
++Exec=nvidia-settings
++Icon=nvidia-settings.png
+ Categories=Application;System;
