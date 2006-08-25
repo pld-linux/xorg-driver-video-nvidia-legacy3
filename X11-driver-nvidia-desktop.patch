@@ -10,5 +10,5 @@
 -Icon=__PIXMAP_PATH__/nvidia-settings.png
 +Comment[pl]=Konfiguracja ustawień X serwera NVidii
 +Exec=nvidia-settings
-+Icon=nvidia-settings.png
++Icon=nvidia-settings
  Categories=Application;System;
