@@ -11,4 +11,5 @@
 +Comment[pl]=Konfiguracja ustawień X serwera NVidii
 +Exec=nvidia-settings
 +Icon=nvidia-settings
- Categories=Application;System;
+-Categories=Application;System;
++Categories=Settings;HardwareSettings;
