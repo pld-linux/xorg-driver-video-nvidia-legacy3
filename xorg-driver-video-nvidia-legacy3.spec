@@ -19,7 +19,7 @@
 %endif
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		13
+%define		rel		14
 
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
