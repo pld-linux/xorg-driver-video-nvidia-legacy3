@@ -28,10 +28,10 @@ Version:	173.14.12
 Release:	%{rel}%{?with_multigl:.mgl}
 License:	nVidia Binary
 Group:		X11
-Source0:	http://us.download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg1.run
-# Source0-md5:	c099b6e15ef34187571403fb017d58a1
-Source1:	http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg2.run
-# Source1-md5:	220b8dbe64d976e0045ee875cfa33c03
+Source0:	http://us.download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
+# Source0-md5:	76b8eba1b14fc273a1a4044705b0aa56
+Source1:	http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
+# Source1-md5:	8675e4ca65033b343c8c77b2ce82e71d
 Source2:	%{pname}-xinitrc.sh
 Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-desktop.patch
@@ -166,10 +166,10 @@ cd %{_builddir}
 rm -rf NVIDIA-Linux-x86*-%{version}-pkg*
 %ifarch %{ix86}
 /bin/sh %{SOURCE0} --extract-only
-%setup -qDT -n NVIDIA-Linux-x86-%{version}-pkg1
+%setup -qDT -n NVIDIA-Linux-x86-%{version}-pkg0
 %else
 /bin/sh %{SOURCE1} --extract-only
-%setup -qDT -n NVIDIA-Linux-x86_64-%{version}-pkg2
+%setup -qDT -n NVIDIA-Linux-x86_64-%{version}-pkg0
 %endif
 %patch0 -p1
 %patch1 -p1
