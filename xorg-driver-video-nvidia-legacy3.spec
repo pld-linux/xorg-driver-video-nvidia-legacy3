@@ -19,23 +19,22 @@
 %endif
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		20
+%define		rel		1
 
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
 Name:		%{pname}%{_alt_kernel}
-Version:	173.14.12
+Version:	173.14.18
 Release:	%{rel}%{?with_multigl:.mgl}
 License:	nVidia Binary
 Group:		X11
 Source0:	http://us.download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
-# Source0-md5:	76b8eba1b14fc273a1a4044705b0aa56
+# Source0-md5:	480c10f3d861fd2c3cc2a46bccc961a4
 Source1:	http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
-# Source1-md5:	8675e4ca65033b343c8c77b2ce82e71d
+# Source1-md5:	39e26816de3b7d3692d28f9bd396eaf6
 Source2:	%{pname}-xinitrc.sh
 Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-legacy-desktop.patch
-Patch2:		NVIDIA_173.14.12_2.6.27.patch
 URL:		http://www.nvidia.com/object/unix.html
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2}
@@ -173,7 +172,6 @@ rm -rf NVIDIA-Linux-x86*-%{version}-pkg*
 %endif
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 echo 'EXTRA_CFLAGS += -Wno-pointer-arith -Wno-sign-compare -Wno-unused' >> usr/src/nv/Makefile.kbuild
 
 %build
