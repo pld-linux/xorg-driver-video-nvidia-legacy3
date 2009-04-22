@@ -19,7 +19,7 @@
 %endif
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		2
+%define		rel		3
 
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
@@ -262,10 +262,10 @@ rm -rf $RPM_BUILD_ROOT
 /sbin/ldconfig
 cat << 'EOF'
 NOTE: You must also install kernel module for this driver to work
-  kernel-video-nvidia-%{version}
-  kernel-desktop-video-nvidia-%{version}
-  kernel-laptop-video-nvidia-%{version}
-  kernel-vanilla-video-nvidia-%{version}
+  kernel-video-nvidia-legacy3-%{version}
+  kernel-desktop-video-nvidia-legacy3-%{version}
+  kernel-laptop-video-nvidia-legacy3-%{version}
+  kernel-vanilla-video-nvidia-legacy3-%{version}
 
 Depending on which kernel brand you use.
 
