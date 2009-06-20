@@ -19,21 +19,19 @@
 %endif
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		2
+%define		rel		3
 
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
 Name:		%{pname}%{_alt_kernel}
-Version:	173.14.16
+Version:	173.14.18
 Release:	%{rel}%{?with_multigl:.mgl}
 License:	nVidia Binary
 Group:		X11
-# Source0:	http://us.download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
-Source0:	ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
-# Source0-md5:	2ee6c2ed8151639943788d1360db6420
-# Source1:	http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
-Source1:	ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
-# Source1-md5:	de9bfd9a84ca2b13a349fac279edcdac
+Source0:	http://us.download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
+# Source0-md5:	480c10f3d861fd2c3cc2a46bccc961a4
+Source1:	http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
+# Source1-md5:	39e26816de3b7d3692d28f9bd396eaf6
 Source2:	%{pname}-xinitrc.sh
 Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-legacy-desktop.patch
