@@ -19,9 +19,10 @@
 %endif
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		3
+%define		rel		4
 
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips
+Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
 Name:		%{pname}%{_alt_kernel}
 Version:	173.14.18
@@ -46,21 +47,10 @@ BuildConflicts:	XFree86-nvidia
 Requires:	xorg-xserver-server
 Requires:	xorg-xserver-server(videodrv-abi) >= 2.0
 Requires:	xorg-xserver-server(videodrv-abi) <= 4.1
-Provides:	OpenGL = 2.1
-Provides:	OpenGL-GLX = 1.4
+Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Provides:	xorg-xserver-module(glx)
-%if %{without multigl}
-Obsoletes:	Mesa
-%endif
-Obsoletes:	X11-OpenGL-core < 1:7.0.0
-Obsoletes:	X11-OpenGL-libGL < 1:7.0.0
-Obsoletes:	XFree86-OpenGL-core < 1:7.0.0
-Obsoletes:	XFree86-OpenGL-libGL < 1:7.0.0
 Obsoletes:	XFree86-driver-nvidia
 Obsoletes:	XFree86-nvidia
-%if %{without multigl}
-Conflicts:	Mesa-libGL
-%endif
 Conflicts:	XFree86-OpenGL-devel <= 4.2.0-3
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -80,6 +70,17 @@ The older graphics chips are unsupported:
 - TNT/TNT2/GeForce 256/GeForce2 Ultra/Quadro2 are suported by -legacy
   drivers.
 
+%description -l hu.UTF-8
+Ez a meghajtó kibővíti az Xorg X szerver 2D működését OpenGL
+gyorsítással, AGP támogatással és támogatja a több monitort.
+Támogatott hardverek: modern NVIDIA GeForce (GeForce2 MX-től) és
+Quadro (Quadro4 és újabbak) alapú grafikai gyorsítók.
+
+A régekbbi grafikus chipek nem támogatottak:
+- NV1 és RIVA 128/128ZX chipek az alap Xorg telepítéssel (nv meghajtó)
+- TNT/TNT2/GeForce 256/GeForce2 Ultra/Quadro2 a -legacy driverekkel
+  támogatottak.
+
 %description -l pl.UTF-8
 Usprawnione sterowniki dla kart graficznych nVidia do serwera Xorg,
 dające wysokowydajną akcelerację OpenGL, obsługę AGP i wielu monitorów
@@ -91,11 +92,36 @@ Starsze układy graficzne nie są obsługiwane przez ten pakiet:
 - TNT/TNT2/GeForce 256/GeForce 2 Ultra/Quadro 2 są obsługiwane przez
   sterowniki -legacy
 
+%package libs
+Summary:	OpenGL (GL and GLX) Nvidia libraries
+Summary(pl.UTF-8):	Biblioteki OpenGL (GL i GLX) Nvidia
+Group:		X11/Development/Libraries
+#Requires:	%{pname} = %{epoch}:%{version}-%{rel}
+Provides:	OpenGL = 2.1
+Provides:	OpenGL-GLX = 1.4
+%if %{without multigl}
+Obsoletes:	Mesa
+%endif
+Obsoletes:	X11-OpenGL-core < 1:7.0.0
+Obsoletes:	X11-OpenGL-libGL < 1:7.0.0
+Obsoletes:	XFree86-OpenGL-core < 1:7.0.0
+Obsoletes:	XFree86-OpenGL-libGL < 1:7.0.0
+%if %{without multigl}
+Conflicts:	Mesa-libGL
+%endif
+
+%description libs
+NVIDIA OpenGL (GL and GLX only) implementation libraries.
+
+%description libs -l pl.UTF-8
+Implementacja OpenGL (tylko GL i GLX) firmy NVIDIA.
+
 %package devel
 Summary:	OpenGL (GL and GLX) header files
+Summary(hu.UTF-8):	OpenGL (GL és GLX) fejléc fájlok
 Summary(pl.UTF-8):	Pliki nagłówkowe OpenGL (GL i GLX)
 Group:		X11/Development/Libraries
-Requires:	%{pname} = %{version}-%{release}
+Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Provides:	OpenGL-GLX-devel = 1.4
 Provides:	OpenGL-devel = 2.1
 Obsoletes:	X11-OpenGL-devel-base
@@ -107,32 +133,43 @@ Conflicts:	XFree86-OpenGL-devel < 4.3.99.902-0.3
 OpenGL header files (GL and GLX only) for NVIDIA OpenGL
 implementation.
 
+%description devel -l hu.UTF-8
+OpenGL fejléc fájlok (csak GL és GLX) NVIDIA OpenGL implementációhoz.
+
 %description devel -l pl.UTF-8
 Pliki nagłówkowe OpenGL (tylko GL i GLX) dla implementacji OpenGL
 firmy NVIDIA.
 
 %package static
 Summary:	Static XvMCNVIDIA library
+Summary(hu.UTF-8):	Statikus XwMCNVIDIA könyvtár
 Summary(pl.UTF-8):	Statyczna biblioteka XvMCNVIDIA
 Group:		X11/Development/Libraries
-Requires:	%{pname}-devel = %{version}-%{release}
+Requires:	%{pname}-devel = %{version}-%{rel}
 
 %description static
 Static XvMCNVIDIA library.
+
+%description static -l hu.UTF-8
+Statikus XwMCNVIDIA könyvtár.
 
 %description static -l pl.UTF-8
 Statyczna biblioteka XvMCNVIDIA.
 
 %package progs
 Summary:	Tools for advanced control of nVidia graphic cards
+Summary(hu.UTF-8):	Eszközök az nVidia grafikus kártyák beállításához
 Summary(pl.UTF-8):	Narzędzia do zarządzania kartami graficznymi nVidia
 Group:		Applications/System
-Requires:	%{pname} = %{version}-%{release}
+Requires:	%{pname} = %{version}-%{rel}
 Suggests:	pkgconfig
 Obsoletes:	XFree86-driver-nvidia-progs
 
 %description progs
 Tools for advanced control of nVidia graphic cards.
+
+%description progs -l hu.UTF-8
+Eszközök az nVidia grafikus kártyák beállításához.
 
 %description progs -l pl.UTF-8
 Narzędzia do zarządzania kartami graficznymi nVidia.
@@ -140,6 +177,7 @@ Narzędzia do zarządzania kartami graficznymi nVidia.
 %package -n kernel%{_alt_kernel}-video-nvidia-legacy3
 Summary:	nVidia kernel module for nVidia Architecture support
 Summary(de.UTF-8):	Das nVidia-Kern-Modul für die nVidia-Architektur-Unterstützung
+Summary(hu.UTF-8):	nVidia Architektúra támogatás Linux kernelhez.
 Summary(pl.UTF-8):	Moduł jądra dla obsługi kart graficznych nVidia
 Release:	%{rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
@@ -155,6 +193,9 @@ nVidia Architecture support for Linux kernel.
 
 %description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l de.UTF-8
 Die nVidia-Architektur-Unterstützung für den Linux-Kern.
+
+%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l pl.UTF-8
+nVidia Architektúra támogatás Linux kernelhez.
 
 %description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l pl.UTF-8
 Obsługa architektury nVidia dla jądra Linuksa. Pakiet wymagany przez
@@ -259,7 +300,6 @@ ln -sf libXvMCNVIDIA.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libXvMCNVIDIA_dynam
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/ldconfig
 cat << 'EOF'
 NOTE: You must also install kernel module for this driver to work
   kernel-video-nvidia-legacy3-%{version}
@@ -276,7 +316,8 @@ if [ ! -e %{_libdir}/xorg/modules/extensions/libglx.so ]; then
 fi
 %endif
 
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %post	-n kernel%{_alt_kernel}-video-nvidia-legacy3
 %depmod %{_kernel_ver}
@@ -289,6 +330,16 @@ fi
 %defattr(644,root,root,755)
 %doc LICENSE
 %doc usr/share/doc/{README.txt,NVIDIA_Changelog,XF86Config.sample,html}
+%if %{with multigl}
+%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so.*
+%ghost %{_libdir}/xorg/modules/extensions/libglx.so
+%else
+%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so*
+%endif
+%attr(755,root,root) %{_libdir}/xorg/modules/libnvidia-wfb.so.*.*
+%attr(755,root,root) %{_libdir}/xorg/modules/drivers/nvidia_drv.so
+
+%files libs
 %if %{with multigl}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ld.so.conf.d/nvidia.conf
 %dir %{_libdir}/nvidia
@@ -312,10 +363,7 @@ fi
 %attr(755,root,root) %{_libdir}/libXvMCNVIDIA_dynamic.so.1
 %attr(755,root,root) %{_libdir}/libnvidia-cfg.so.*.*
 %attr(755,root,root) %{_libdir}/libnvidia-tls.so.*.*
-%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so*
 %endif
-%attr(755,root,root) %{_libdir}/xorg/modules/libnvidia-wfb.so.*.*
-%attr(755,root,root) %{_libdir}/xorg/modules/drivers/nvidia_drv.so
 
 %files devel
 %defattr(644,root,root,755)
