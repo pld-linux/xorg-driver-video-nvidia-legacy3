@@ -70,6 +70,17 @@ The older graphics chips are unsupported:
 - TNT/TNT2/GeForce 256/GeForce2 Ultra/Quadro2 are suported by -legacy
   drivers.
 
+%description -l hu.UTF-8
+Ez a meghajtó kibővíti az Xorg X szerver 2D működését OpenGL
+gyorsítással, AGP támogatással és támogatja a több monitort.
+Támogatott hardverek: modern NVIDIA GeForce (GeForce2 MX-től) és
+Quadro (Quadro4 és újabbak) alapú grafikai gyorsítók.
+
+A régekbbi grafikus chipek nem támogatottak:
+- NV1 és RIVA 128/128ZX chipek az alap Xorg telepítéssel (nv meghajtó)
+- TNT/TNT2/GeForce 256/GeForce2 Ultra/Quadro2 a -legacy driverekkel
+  támogatottak.
+
 %description -l pl.UTF-8
 Usprawnione sterowniki dla kart graficznych nVidia do serwera Xorg,
 dające wysokowydajną akcelerację OpenGL, obsługę AGP i wielu monitorów
@@ -107,6 +118,7 @@ Implementacja OpenGL (tylko GL i GLX) firmy NVIDIA.
 
 %package devel
 Summary:	OpenGL (GL and GLX) header files
+Summary(hu.UTF-8):	OpenGL (GL és GLX) fejléc fájlok
 Summary(pl.UTF-8):	Pliki nagłówkowe OpenGL (GL i GLX)
 Group:		X11/Development/Libraries
 Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
@@ -121,12 +133,16 @@ Conflicts:	XFree86-OpenGL-devel < 4.3.99.902-0.3
 OpenGL header files (GL and GLX only) for NVIDIA OpenGL
 implementation.
 
+%description devel -l hu.UTF-8
+OpenGL fejléc fájlok (csak GL és GLX) NVIDIA OpenGL implementációhoz.
+
 %description devel -l pl.UTF-8
 Pliki nagłówkowe OpenGL (tylko GL i GLX) dla implementacji OpenGL
 firmy NVIDIA.
 
 %package static
 Summary:	Static XvMCNVIDIA library
+Summary(hu.UTF-8):	Statikus XwMCNVIDIA könyvtár
 Summary(pl.UTF-8):	Statyczna biblioteka XvMCNVIDIA
 Group:		X11/Development/Libraries
 Requires:	%{pname}-devel = %{epoch}:%{version}-%{rel}
@@ -134,11 +150,15 @@ Requires:	%{pname}-devel = %{epoch}:%{version}-%{rel}
 %description static
 Static XvMCNVIDIA library.
 
+%description static -l hu.UTF-8
+Statikus XwMCNVIDIA könyvtár.
+
 %description static -l pl.UTF-8
 Statyczna biblioteka XvMCNVIDIA.
 
 %package progs
 Summary:	Tools for advanced control of nVidia graphic cards
+Summary(hu.UTF-8):	Eszközök az nVidia grafikus kártyák beállításához
 Summary(pl.UTF-8):	Narzędzia do zarządzania kartami graficznymi nVidia
 Group:		Applications/System
 Requires:	%{pname} = %{epoch}:%{version}-%{rel}
@@ -148,12 +168,16 @@ Obsoletes:	XFree86-driver-nvidia-progs
 %description progs
 Tools for advanced control of nVidia graphic cards.
 
+%description progs -l hu.UTF-8
+Eszközök az nVidia grafikus kártyák beállításához.
+
 %description progs -l pl.UTF-8
 Narzędzia do zarządzania kartami graficznymi nVidia.
 
 %package -n kernel%{_alt_kernel}-video-nvidia-legacy3
 Summary:	nVidia kernel module for nVidia Architecture support
 Summary(de.UTF-8):	Das nVidia-Kern-Modul für die nVidia-Architektur-Unterstützung
+Summary(hu.UTF-8):	nVidia Architektúra támogatás Linux kernelhez.
 Summary(pl.UTF-8):	Moduł jądra dla obsługi kart graficznych nVidia
 Release:	%{rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
@@ -169,6 +193,9 @@ nVidia Architecture support for Linux kernel.
 
 %description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l de.UTF-8
 Die nVidia-Architektur-Unterstützung für den Linux-Kern.
+
+%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l hu.UTF-8
+nVidia Architektúra támogatás Linux kernelhez.
 
 %description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l pl.UTF-8
 Obsługa architektury nVidia dla jądra Linuksa. Pakiet wymagany przez
