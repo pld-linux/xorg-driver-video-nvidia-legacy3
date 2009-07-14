@@ -1,4 +1,5 @@
 # TODO
+# - should -libs Require main package?
 # - solve this (shouldn't there be some obsoletes?):
 #   error: xorg-driver-video-nvidia-169.12-3.i686 (cnfl Mesa-libGL) conflicts with installed Mesa-libGL-7.0.3-2.i686
 #   error: xorg-driver-video-nvidia-169.12-3.i686 (cnfl Mesa-libGL) conflicts with installed Mesa-libGL-7.0.3-2.i686
@@ -43,24 +44,13 @@ BuildRequires:	%{kgcc_package}
 BuildRequires:	rpmbuild(macros) >= 1.379
 BuildRequires:	sed >= 4.0
 BuildConflicts:	XFree86-nvidia
+Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Requires:	xorg-xserver-server
-Requires:	xorg-xserver-server(videodrv-abi) >= 2.0
 Requires:	xorg-xserver-server(videodrv-abi) < 6.0
-Provides:	OpenGL = 2.1
-Provides:	OpenGL-GLX = 1.4
+Requires:	xorg-xserver-server(videodrv-abi) >= 2.0
 Provides:	xorg-xserver-module(glx)
-%if %{without multigl}
-Obsoletes:	Mesa
-%endif
-Obsoletes:	X11-OpenGL-core < 1:7.0.0
-Obsoletes:	X11-OpenGL-libGL < 1:7.0.0
-Obsoletes:	XFree86-OpenGL-core < 1:7.0.0
-Obsoletes:	XFree86-OpenGL-libGL < 1:7.0.0
 Obsoletes:	XFree86-driver-nvidia
 Obsoletes:	XFree86-nvidia
-%if %{without multigl}
-Conflicts:	Mesa-libGL
-%endif
 Conflicts:	XFree86-OpenGL-devel <= 4.2.0-3
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -91,11 +81,35 @@ Starsze układy graficzne nie są obsługiwane przez ten pakiet:
 - TNT/TNT2/GeForce 256/GeForce 2 Ultra/Quadro 2 są obsługiwane przez
   sterowniki -legacy
 
+%package libs
+Summary:	OpenGL (GL and GLX) Nvidia libraries
+Summary(pl.UTF-8):	Biblioteki OpenGL (GL i GLX) Nvidia
+Group:		X11/Development/Libraries
+#Requires:	%{pname} = %{epoch}:%{version}-%{rel}
+Provides:	OpenGL = 2.1
+Provides:	OpenGL-GLX = 1.4
+%if %{without multigl}
+Obsoletes:	Mesa
+%endif
+Obsoletes:	X11-OpenGL-core < 1:7.0.0
+Obsoletes:	X11-OpenGL-libGL < 1:7.0.0
+Obsoletes:	XFree86-OpenGL-core < 1:7.0.0
+Obsoletes:	XFree86-OpenGL-libGL < 1:7.0.0
+%if %{without multigl}
+Conflicts:	Mesa-libGL
+%endif
+
+%description libs
+NVIDIA OpenGL (GL and GLX only) implementation libraries.
+
+%description libs -l pl.UTF-8
+Implementacja OpenGL (tylko GL i GLX) firmy NVIDIA.
+
 %package devel
 Summary:	OpenGL (GL and GLX) header files
 Summary(pl.UTF-8):	Pliki nagłówkowe OpenGL (GL i GLX)
 Group:		X11/Development/Libraries
-Requires:	%{pname} = %{version}-%{release}
+Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Provides:	OpenGL-GLX-devel = 1.4
 Provides:	OpenGL-devel = 2.1
 Obsoletes:	X11-OpenGL-devel-base
@@ -146,7 +160,7 @@ Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
 Requires:	dev >= 2.7.7-10
 %{?with_dist_kernel:%requires_releq_kernel}
-Requires:	%{pname} = %{version}-%{rel}
+Requires:	%{pname} = %{epoch}:%{version}-%{rel}
 Provides:	X11-driver-nvidia(kernel)
 Obsoletes:	XFree86-nvidia-kernel
 
@@ -269,7 +283,6 @@ ln -sf libcuda.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libcuda.so
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/ldconfig
 cat << 'EOF'
 NOTE: You must also install kernel module for this driver to work
   kernel-video-nvidia-legacy3-%{version}
@@ -286,7 +299,8 @@ if [ ! -e %{_libdir}/xorg/modules/extensions/libglx.so ]; then
 fi
 %endif
 
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %post	-n kernel%{_alt_kernel}-video-nvidia-legacy3
 %depmod %{_kernel_ver}
@@ -299,6 +313,16 @@ fi
 %defattr(644,root,root,755)
 %doc LICENSE
 %doc usr/share/doc/{README.txt,NVIDIA_Changelog,XF86Config.sample,html}
+%if %{with multigl}
+%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so.*
+%ghost %{_libdir}/xorg/modules/extensions/libglx.so
+%else
+%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so*
+%endif
+%attr(755,root,root) %{_libdir}/xorg/modules/libnvidia-wfb.so.*.*
+%attr(755,root,root) %{_libdir}/xorg/modules/drivers/nvidia_drv.so
+
+%files libs
 %if %{with multigl}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ld.so.conf.d/nvidia.conf
 %dir %{_libdir}/nvidia
@@ -330,10 +354,7 @@ fi
 %attr(755,root,root) %{_libdir}/libvdpau.so.*.*
 %attr(755,root,root) %{_libdir}/libvdpau_nvidia.so.*.*
 %attr(755,root,root) %{_libdir}/libvdpau_trace.so.*.*
-%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so*
 %endif
-%attr(755,root,root) %{_libdir}/xorg/modules/libnvidia-wfb.so.*.*
-%attr(755,root,root) %{_libdir}/xorg/modules/drivers/nvidia_drv.so
 
 %files devel
 %defattr(644,root,root,755)
