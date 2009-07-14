@@ -129,7 +129,7 @@ firmy NVIDIA.
 Summary:	Static XvMCNVIDIA library
 Summary(pl.UTF-8):	Statyczna biblioteka XvMCNVIDIA
 Group:		X11/Development/Libraries
-Requires:	%{pname}-devel = %{version}-%{release}
+Requires:	%{pname}-devel = %{epoch}:%{version}-%{rel}
 
 %description static
 Static XvMCNVIDIA library.
@@ -141,7 +141,7 @@ Statyczna biblioteka XvMCNVIDIA.
 Summary:	Tools for advanced control of nVidia graphic cards
 Summary(pl.UTF-8):	Narzędzia do zarządzania kartami graficznymi nVidia
 Group:		Applications/System
-Requires:	%{pname} = %{version}-%{release}
+Requires:	%{pname} = %{epoch}:%{version}-%{rel}
 Suggests:	pkgconfig
 Obsoletes:	XFree86-driver-nvidia-progs
 
