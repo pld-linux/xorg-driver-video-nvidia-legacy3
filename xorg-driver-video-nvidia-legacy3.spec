@@ -1,5 +1,4 @@
 # TODO
-# - should -libs Require main package?
 # - solve this (shouldn't there be some obsoletes?):
 #   error: xorg-driver-video-nvidia-169.12-3.i686 (cnfl Mesa-libGL) conflicts with installed Mesa-libGL-7.0.3-2.i686
 #   error: xorg-driver-video-nvidia-169.12-3.i686 (cnfl Mesa-libGL) conflicts with installed Mesa-libGL-7.0.3-2.i686
