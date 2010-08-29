@@ -19,7 +19,7 @@
 %endif
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		1
+%define		rel		2
 
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
@@ -233,7 +233,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with userspace}
 install -d $RPM_BUILD_ROOT%{_libdir}/xorg/modules/{drivers,extensions} \
-	$RPM_BUILD_ROOT{%{_includedir}/{GL,cuda},%{_libdir},%{_bindir},%{_mandir}/man1} \
+	$RPM_BUILD_ROOT{%{_includedir}/GL,%{_libdir},%{_bindir},%{_mandir}/man1} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir},/etc/X11/xinit/xinitrc.d}
 %if %{with multigl}
 install -d $RPM_BUILD_ROOT{%{_libdir}/nvidia,%{_sysconfdir}/ld.so.conf.d}
@@ -249,7 +249,6 @@ for f in \
 	usr/lib/tls/libnvidia-tls.so.%{version}		\
 	usr/lib/libnvidia-cfg.so.%{version}		\
 	usr/lib/libGL{,core}.so.%{version}		\
-	usr/lib/libcuda.so.%{version}			\
 	usr/X11R6/lib/libXvMCNVIDIA.so.%{version}	\
 %if %{without multigl}
 	usr/X11R6/lib/libXvMCNVIDIA.a			\
@@ -271,7 +270,6 @@ install usr/X11R6/lib/modules/libnvidia-wfb.so.%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/xorg/modules
 
 install usr/include/GL/*.h $RPM_BUILD_ROOT%{_includedir}/GL
-install usr/include/cuda/*.h $RPM_BUILD_ROOT%{_includedir}/cuda
 
 ln -sf libglx.so.%{version} $RPM_BUILD_ROOT%{_libdir}/xorg/modules/extensions/libglx.so
 
@@ -284,8 +282,6 @@ ln -sf nvidia/libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 
 ln -sf nvidia/libXvMCNVIDIA.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libXvMCNVIDIA.so
 ln -sf libXvMCNVIDIA.so.%{version} $RPM_BUILD_ROOT%{_libdir}/nvidia/libXvMCNVIDIA_dynamic.so.1
-
-ln -sf nvidia/libcuda.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libcuda.so
 %else
 # OpenGL ABI for Linux compatibility
 ln -sf libGL.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libGL.so.1
@@ -293,8 +289,6 @@ ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 
 ln -sf libXvMCNVIDIA.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libXvMCNVIDIA.so
 ln -sf libXvMCNVIDIA.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libXvMCNVIDIA_dynamic.so.1
-
-ln -sf libcuda.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libcuda.so
 %endif
 %endif
 
@@ -354,7 +348,6 @@ fi
 %attr(755,root,root) %{_libdir}/nvidia/libGLcore.so.*.*
 %attr(755,root,root) %{_libdir}/nvidia/libXvMCNVIDIA.so.*.*
 %attr(755,root,root) %{_libdir}/nvidia/libXvMCNVIDIA_dynamic.so.1
-%attr(755,root,root) %{_libdir}/nvidia/libcuda.so.*.*
 %attr(755,root,root) %{_libdir}/nvidia/libnvidia-cfg.so.*.*
 %attr(755,root,root) %{_libdir}/nvidia/libnvidia-tls.so.*.*
 %attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so.*
@@ -368,7 +361,6 @@ fi
 %attr(755,root,root) %{_libdir}/libGLcore.so.*.*
 %attr(755,root,root) %{_libdir}/libXvMCNVIDIA.so.*.*
 %attr(755,root,root) %{_libdir}/libXvMCNVIDIA_dynamic.so.1
-%attr(755,root,root) %{_libdir}/libcuda.so.*.*
 %attr(755,root,root) %{_libdir}/libnvidia-cfg.so.*.*
 %attr(755,root,root) %{_libdir}/libnvidia-tls.so.*.*
 %endif
@@ -376,13 +368,11 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXvMCNVIDIA.so
-%attr(755,root,root) %{_libdir}/libcuda.so
 %dir %{_includedir}/GL
 %{_includedir}/GL/gl.h
 %{_includedir}/GL/glext.h
 %{_includedir}/GL/glx.h
 %{_includedir}/GL/glxext.h
-%{_includedir}/cuda
 %if %{with multigl}
 %attr(755,root,root) %{_libdir}/libGL.so
 %endif
