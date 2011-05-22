@@ -1,4 +1,5 @@
 # TODO
+# - use name like: nvidia-71xx and nvidia-96xx, nvidia-173xx.
 # - solve this (shouldn't there be some obsoletes?):
 #   error: xorg-driver-video-nvidia-169.12-3.i686 (cnfl Mesa-libGL) conflicts with installed Mesa-libGL-7.0.3-2.i686
 #   error: xorg-driver-video-nvidia-169.12-3.i686 (cnfl Mesa-libGL) conflicts with installed Mesa-libGL-7.0.3-2.i686
@@ -20,20 +21,20 @@
 %define		no_install_post_check_so	1
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		15
+%define		rel		1
 
-Summary:	Linux Drivers for nVidia GeForce/Quadro Chips
+Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
 Name:		%{pname}%{_alt_kernel}
-Version:	173.14.28
+Version:	173.14.30
 Release:	%{rel}%{?with_multigl:.mgl}
 License:	nVidia Binary
 Group:		X11
 Source0:	ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
-# Source0-md5:	3b2085ffc2047e701a01b3163129f763
+# Source0-md5:	665f9f730c18ab24a997e0e14b863262
 Source1:	ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
-# Source1-md5:	8f48430f2b759d4efbf022cb415ecc5d
+# Source1-md5:	8c47463ae14a2f742d0fa00160456745
 Source2:	%{pname}-xinitrc.sh
 Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-legacy-desktop.patch
@@ -47,7 +48,7 @@ BuildRequires:	sed >= 4.0
 BuildConflicts:	XFree86-nvidia
 Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Requires:	xorg-xserver-server
-Requires:	xorg-xserver-server(videodrv-abi) <= 8.0
+Requires:	xorg-xserver-server(videodrv-abi) <= 10.0
 Requires:	xorg-xserver-server(videodrv-abi) >= 2.0
 Provides:	xorg-xserver-module(glx)
 Obsoletes:	XFree86-driver-nvidia
