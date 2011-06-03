@@ -21,7 +21,7 @@
 %define		no_install_post_check_so	1
 
 %define		pname		xorg-driver-video-nvidia-legacy3
-%define		rel		2
+%define		rel		3
 
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
@@ -158,6 +158,14 @@ Statikus XwMCNVIDIA könyvtár.
 %description static -l pl.UTF-8
 Statyczna biblioteka XvMCNVIDIA.
 
+%package doc
+Summary:	Documentation for NVIDIA Graphics Driver
+Group:		Documentation
+
+%description doc
+NVIDIA Accelerated Linux Graphics Driver README and Installation
+Guide.
+
 %package progs
 Summary:	Tools for advanced control of nVidia graphic cards
 Summary(hu.UTF-8):	Eszközök az nVidia grafikus kártyák beállításához
@@ -241,11 +249,11 @@ install -d $RPM_BUILD_ROOT%{_libdir}/xorg/modules/{drivers,extensions} \
 install -d $RPM_BUILD_ROOT{%{_libdir}/nvidia,%{_sysconfdir}/ld.so.conf.d}
 %endif
 
-install usr/bin/nvidia-{settings,xconfig,bug-report.sh} $RPM_BUILD_ROOT%{_bindir}
-install usr/share/man/man1/nvidia-{settings,xconfig}.* $RPM_BUILD_ROOT%{_mandir}/man1
-install usr/share/applications/nvidia-settings.desktop $RPM_BUILD_ROOT%{_desktopdir}
-install usr/share/pixmaps/nvidia-settings.png $RPM_BUILD_ROOT%{_pixmapsdir}
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/nvidia-settings.sh
+install -p usr/bin/nvidia-{settings,xconfig,bug-report.sh} $RPM_BUILD_ROOT%{_bindir}
+cp -p usr/share/man/man1/nvidia-{settings,xconfig}.* $RPM_BUILD_ROOT%{_mandir}/man1
+cp -p usr/share/applications/nvidia-settings.desktop $RPM_BUILD_ROOT%{_desktopdir}
+cp -p usr/share/pixmaps/nvidia-settings.png $RPM_BUILD_ROOT%{_pixmapsdir}
+install -p %{SOURCE2} $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/nvidia-settings.sh
 
 for f in \
 	usr/lib/tls/libnvidia-tls.so.%{version}		\
@@ -259,21 +267,22 @@ for f in \
 done
 %else
 ; do
-	install $f $RPM_BUILD_ROOT%{_libdir}/nvidia
+	install -p $f $RPM_BUILD_ROOT%{_libdir}/nvidia
 done
-install usr/X11R6/lib/libXvMCNVIDIA.a $RPM_BUILD_ROOT%{_libdir}
+cp -p usr/X11R6/lib/libXvMCNVIDIA.a $RPM_BUILD_ROOT%{_libdir}
 %endif
 
-install usr/X11R6/lib/modules/extensions/libglx.so.%{version} \
+install -p usr/X11R6/lib/modules/extensions/libglx.so.%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/xorg/modules/extensions
-install usr/X11R6/lib/modules/drivers/nvidia_drv.so \
-	$RPM_BUILD_ROOT%{_libdir}/xorg/modules/drivers
-install usr/X11R6/lib/modules/libnvidia-wfb.so.%{version} \
+install -p usr/X11R6/lib/modules/drivers/nvidia_drv.so \
+	$RPM_BUILD_ROOT%{_libdir}/xorg/modules/drivers/nvidia_drv.so.%{version}
+install -p usr/X11R6/lib/modules/libnvidia-wfb.so.%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/xorg/modules
 
-install usr/include/GL/*.h $RPM_BUILD_ROOT%{_includedir}/GL
+cp -p usr/include/GL/*.h $RPM_BUILD_ROOT%{_includedir}/GL
 
 ln -sf libglx.so.%{version} $RPM_BUILD_ROOT%{_libdir}/xorg/modules/extensions/libglx.so
+ln -sf nvidia_drv.so.%{version} $RPM_BUILD_ROOT%{_libdir}/xorg/modules/drivers/nvidia_drv.so
 
 %if %{with multigl}
 echo %{_libdir}/nvidia >$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/nvidia.conf
@@ -305,18 +314,11 @@ rm -rf $RPM_BUILD_ROOT
 cat << 'EOF'
 NOTE: You must also install kernel module for this driver to work
   kernel-video-nvidia-legacy3-%{version}
-  kernel-desktop-video-nvidia-legacy3-%{version}
-  kernel-laptop-video-nvidia-legacy3-%{version}
-  kernel-vanilla-video-nvidia-legacy3-%{version}
-
-Depending on which kernel brand you use.
 
 EOF
-%if %{with multigl}
-if [ ! -e %{_libdir}/xorg/modules/extensions/libglx.so ]; then
-	ln -sf libglx.so.%{version} %{_libdir}/xorg/modules/extensions/libglx.so
-fi
-%endif
+/sbin/ldconfig -N %{_libdir}/xorg/modules/extensions
+# until versioned SONAME is built for nvidia_drv.so, update symlink manually
+ln -sf nvidia_drv.so.%{version} %{_libdir}/xorg/modules/drivers/nvidia_drv.so
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
@@ -331,17 +333,20 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc LICENSE
-%doc usr/share/doc/{README.txt,NVIDIA_Changelog,XF86Config.sample,html}
+%doc usr/share/doc/{README.txt,NVIDIA_Changelog,XF86Config.sample}
 %if %{with multigl}
 %attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so.*
-%ghost %{_libdir}/xorg/modules/extensions/libglx.so
+%attr(755,root,root) %ghost %{_libdir}/xorg/modules/extensions/libglx.so
 %else
-%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so*
+%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so.*
+%attr(755,root,root) %ghost %{_libdir}/xorg/modules/extensions/libglx.so
 %endif
 %attr(755,root,root) %{_libdir}/xorg/modules/libnvidia-wfb.so.*.*
-%attr(755,root,root) %{_libdir}/xorg/modules/drivers/nvidia_drv.so
+%attr(755,root,root) %{_libdir}/xorg/modules/drivers/nvidia_drv.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/xorg/modules/drivers/nvidia_drv.so
 
 %files libs
+%defattr(644,root,root,755)
 %if %{with multigl}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ld.so.conf.d/nvidia.conf
 %dir %{_libdir}/nvidia
@@ -352,8 +357,6 @@ fi
 %attr(755,root,root) %{_libdir}/nvidia/libXvMCNVIDIA_dynamic.so.1
 %attr(755,root,root) %{_libdir}/nvidia/libnvidia-cfg.so.*.*
 %attr(755,root,root) %{_libdir}/nvidia/libnvidia-tls.so.*.*
-%attr(755,root,root) %{_libdir}/xorg/modules/extensions/libglx.so.*
-%ghost %{_libdir}/xorg/modules/extensions/libglx.so
 %else
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/libGL.so.1
@@ -382,6 +385,10 @@ fi
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libXvMCNVIDIA.a
+
+%files doc
+%defattr(644,root,root,755)
+%doc usr/share/doc/html/*
 
 %files progs
 %defattr(644,root,root,755)
