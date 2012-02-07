@@ -19,13 +19,14 @@
 %endif
 %define		no_install_post_check_so	1
 
+%define		rel		12
 %define		pname		xorg-driver-video-nvidia-legacy3
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
 Name:		%{pname}%{_alt_kernel}
 Version:	173.14.31
-Release:	11
+Release:	%{rel}
 License:	nVidia Binary
 Group:		X11
 Source0:	ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
@@ -45,7 +46,7 @@ BuildRequires:	%{kgcc_package}
 BuildRequires:	rpmbuild(macros) >= 1.379
 BuildRequires:	sed >= 4.0
 BuildConflicts:	XFree86-nvidia
-Requires:	%{pname}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Requires:	xorg-xserver-server
 Requires:	xorg-xserver-server(videodrv-abi) <= 10.0
 Requires:	xorg-xserver-server(videodrv-abi) >= 2.0
@@ -56,9 +57,6 @@ Obsoletes:	XFree86-nvidia
 Conflicts:	XFree86-OpenGL-devel <= 4.2.0-3
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-# constify %release macro, so it wouldn't expand in kernel subpkgs
-%{expand:%%global release %{release}}
 
 %define		_noautoreqdep	libGL.so.1 libGLcore.so.1
 
@@ -101,7 +99,7 @@ Starsze układy graficzne nie są obsługiwane przez ten pakiet:
 Summary:	OpenGL (GL and GLX) Nvidia libraries
 Summary(pl.UTF-8):	Biblioteki OpenGL (GL i GLX) Nvidia
 Group:		X11/Development/Libraries
-#Requires:	%{pname} = %{epoch}:%{version}-%{release}
+#Requires:	%{pname} = %{epoch}:%{version}-%{rel}
 Provides:	OpenGL = 2.1
 Provides:	OpenGL-GLX = 1.4
 Obsoletes:	X11-OpenGL-core < 1:7.0.0
@@ -120,7 +118,7 @@ Summary:	OpenGL (GL and GLX) header files
 Summary(hu.UTF-8):	OpenGL (GL és GLX) fejléc fájlok
 Summary(pl.UTF-8):	Pliki nagłówkowe OpenGL (GL i GLX)
 Group:		X11/Development/Libraries
-Requires:	%{pname}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Provides:	OpenGL-GLX-devel = 1.4
 Provides:	OpenGL-devel = 2.1
 Obsoletes:	X11-OpenGL-devel-base
@@ -144,7 +142,7 @@ Summary:	Static XvMCNVIDIA library
 Summary(hu.UTF-8):	Statikus XwMCNVIDIA könyvtár
 Summary(pl.UTF-8):	Statyczna biblioteka XvMCNVIDIA
 Group:		X11/Development/Libraries
-Requires:	%{pname}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{pname}-devel = %{epoch}:%{version}-%{rel}
 
 %description static
 Static XvMCNVIDIA library.
@@ -168,7 +166,7 @@ Summary:	Tools for advanced control of nVidia graphic cards
 Summary(hu.UTF-8):	Eszközök az nVidia grafikus kártyák beállításához
 Summary(pl.UTF-8):	Narzędzia do zarządzania kartami graficznymi nVidia
 Group:		Applications/System
-Requires:	%{pname} = %{epoch}:%{version}-%{release}
+Requires:	%{pname} = %{epoch}:%{version}-%{rel}
 Suggests:	pkgconfig
 Obsoletes:	XFree86-driver-nvidia-progs
 
@@ -186,12 +184,12 @@ Summary:	nVidia kernel module for nVidia Architecture support
 Summary(de.UTF-8):	Das nVidia-Kern-Modul für die nVidia-Architektur-Unterstützung
 Summary(hu.UTF-8):	nVidia Architektúra támogatás Linux kernelhez.
 Summary(pl.UTF-8):	Moduł jądra dla obsługi kart graficznych nVidia
-Release:	%{release}@%{_kernel_ver_str}
+Release:	%{rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
 Requires:	dev >= 2.7.7-10
 %{?with_dist_kernel:%requires_releq_kernel}
-Requires:	%{pname} = %{epoch}:%{version}-%{release}
+Requires:	%{pname} = %{epoch}:%{version}-%{rel}
 Provides:	X11-driver-nvidia(kernel)
 Obsoletes:	XFree86-nvidia-kernel
 
