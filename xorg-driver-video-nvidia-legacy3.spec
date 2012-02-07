@@ -19,7 +19,7 @@
 %endif
 %define		no_install_post_check_so	1
 
-%define		rel		13
+%define		rel		14
 %define		pname		xorg-driver-video-nvidia-legacy3
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
@@ -322,9 +322,9 @@ EOF
 %doc usr/share/doc/{README.txt,NVIDIA_Changelog,XF86Config.sample}
 %dir %{_libdir}/xorg/modules/extensions/nvidia
 %attr(755,root,root) %{_libdir}/xorg/modules/extensions/nvidia/libglx.so.*
-%attr(755,root,root) %ghost %{_libdir}/xorg/modules/extensions/nvidia/libglx.so
+%attr(755,root,root) %{_libdir}/xorg/modules/extensions/nvidia/libglx.so
 %attr(755,root,root) %{_libdir}/xorg/modules/extensions/nvidia/libnvidia-wfb.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/xorg/modules/extensions/nvidia/libnvidia-wfb.so
+%attr(755,root,root) %{_libdir}/xorg/modules/extensions/nvidia/libnvidia-wfb.so
 %attr(755,root,root) %{_libdir}/xorg/modules/drivers/nvidia_drv.so
 %{_sysconfdir}/X11/xorg.conf.d/10-nvidia.conf
 %{_sysconfdir}/X11/xorg.conf.d/10-nvidia-modules.conf
