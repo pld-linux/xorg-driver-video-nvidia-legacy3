@@ -166,7 +166,7 @@ Summary:	Tools for advanced control of nVidia graphic cards
 Summary(hu.UTF-8):	Eszközök az nVidia grafikus kártyák beállításához
 Summary(pl.UTF-8):	Narzędzia do zarządzania kartami graficznymi nVidia
 Group:		Applications/System
-Requires:	%{pname} = %{epoch}:%{version}-%{rel}
+Requires:	%{pname} = %{epoch}:%{version}
 Suggests:	pkgconfig
 Obsoletes:	XFree86-driver-nvidia-progs
 
