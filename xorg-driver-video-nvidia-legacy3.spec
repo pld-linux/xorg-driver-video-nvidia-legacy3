@@ -25,14 +25,14 @@ Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
 Name:		%{pname}%{_alt_kernel}
-Version:	173.14.36
+Version:	173.14.37
 Release:	%{rel}
 License:	nVidia Binary
 Group:		X11
 Source0:	ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
-# Source0-md5:	513677824e9684dd34ca17ad56a68500
+# Source0-md5:	ca80332b4e27d21108ceab9314420b9b
 Source1:	ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
-# Source1-md5:	c341612429c2885980103b40542cb2b2
+# Source1-md5:	761fec0664e715df35cdb64cd4b087f4
 Source2:	%{pname}-xinitrc.sh
 Source3:	10-nvidia.conf
 Source4:	10-nvidia-modules.conf
@@ -48,7 +48,7 @@ BuildRequires:	sed >= 4.0
 BuildConflicts:	XFree86-nvidia
 Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Requires:	xorg-xserver-server
-Requires:	xorg-xserver-server(videodrv-abi) <= 13.0
+Requires:	xorg-xserver-server(videodrv-abi) <= 14.0
 Requires:	xorg-xserver-server(videodrv-abi) >= 2.0
 Provides:	xorg-driver-video
 Provides:	xorg-xserver-module(glx)
