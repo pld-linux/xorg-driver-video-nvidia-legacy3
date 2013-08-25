@@ -19,7 +19,7 @@
 %endif
 %define		no_install_post_check_so	1
 
-%define		rel		14
+%define		rel		15
 %define		pname		xorg-driver-video-nvidia-legacy3
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
@@ -36,8 +36,15 @@ Source1:	ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-
 Source2:	%{pname}-xinitrc.sh
 Source3:	10-nvidia.conf
 Source4:	10-nvidia-modules.conf
+Source5:	patches.h
+Source6:	conftest.h
+Source7:	conftest.sh
 Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-legacy-desktop.patch
+Patch2:		linux-3.10-i2c.patch
+Patch3:		linux-3.10-procfs.patch
+Patch4:		linux-3.11.patch
+Patch5:		nvidia-blacklist-vga-pmu-registers-195.patch
 URL:		http://www.nvidia.com/object/unix.html
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2}
@@ -218,6 +225,14 @@ rm -rf NVIDIA-Linux-x86*-%{version}-pkg*
 %endif
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+
+install %{SOURCE5} usr/src/nv/
+install %{SOURCE6} usr/src/nv/
+install -m 755 %{SOURCE7} usr/src/nv/
 echo 'EXTRA_CFLAGS += -Wno-pointer-arith -Wno-sign-compare -Wno-unused' >> usr/src/nv/Makefile.kbuild
 
 %build
