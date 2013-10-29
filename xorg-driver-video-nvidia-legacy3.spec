@@ -10,23 +10,49 @@
 %bcond_without	userspace	# don't build userspace programs
 %bcond_with	verbose		# verbose build (V=1)
 
-%if "%{_alt_kernel}" != "%{nil}"
-%undefine	with_userspace
+%if %{without kernel}
+%undefine	with_dist_kernel
 %endif
+
+# The goal here is to have main, userspace, package built once with
+# simple release number, and only rebuild kernel packages with kernel
+# version as part of release number, without the need to bump release
+# with every kernel change.
+%if 0%{?_pld_builder:1} && %{with kernel} && %{with userspace}
+%{error:kernel and userspace cannot be built at the same time on PLD builders}
+exit 1
+%endif
+
+%if "%{_alt_kernel}" != "%{nil}"
+%if 0%{?build_kernels:1}
+%{error:alt_kernel and build_kernels are mutually exclusive}
+exit 1
+%endif
+%undefine	with_userspace
+%global		_build_kernels		%{alt_kernel}
+%else
+%global		_build_kernels		%{?build_kernels:,%{?build_kernels}}
+%endif
+
 %if %{without userspace}
 # nothing to be placed to debuginfo package
 %define		_enable_debug_packages	0
 %endif
+
 %define		no_install_post_check_so	1
 
-%define		rel		21
+%define		kbrs	%(echo %{_build_kernels} | tr , '\\n' | while read n ; do echo %%undefine alt_kernel ; [ -z "$n" ] || echo %%define alt_kernel $n ; echo "BuildRequires:kernel%%{_alt_kernel}-module-build >= 3:2.6.20.2" ; done)
+%define		kpkg	%(echo %{_build_kernels} | tr , '\\n' | while read n ; do echo %%undefine alt_kernel ; [ -z "$n" ] || echo %%define alt_kernel $n ; echo %%kernel_pkg ; done)
+%define		bkpkg	%(echo %{_build_kernels} | tr , '\\n' | while read n ; do echo %%undefine alt_kernel ; [ -z "$n" ] || echo %%define alt_kernel $n ; echo %%build_kernel_pkg ; done)
+
+%define		rel		22
 %define		pname		xorg-driver-video-nvidia-legacy3
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
 Summary(pl.UTF-8):	Sterowniki do kart graficznych nVidia GeForce/Quadro
-Name:		%{pname}%{_alt_kernel}
+Name:		%{pname}%{?_pld_builder:%{?with_kernel:-kernel}}%{_alt_kernel}
 Version:	173.14.37
-Release:	%{rel}
+Release:	%{rel}%{?_pld_builder:%{?with_kernel:@%{_kernel_ver_str}}}
 License:	nVidia Binary
 Group:		X11
 Source0:	ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
@@ -45,12 +71,10 @@ Patch2:		linux-3.10-i2c.patch
 Patch3:		linux-3.10-procfs.patch
 Patch4:		linux-3.11.patch
 Patch5:		nvidia-blacklist-vga-pmu-registers-195.patch
+Patch6:		kbuild.patch
 URL:		http://www.nvidia.com/object/unix.html
-%if %{with kernel}
-%{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2}
-%endif
-BuildRequires:	%{kgcc_package}
-BuildRequires:	rpmbuild(macros) >= 1.379
+BuildRequires:	rpmbuild(macros) >= 1.678
+%{?with_dist_kernel:%{expand:%kbrs}}
 BuildRequires:	sed >= 4.0
 BuildConflicts:	XFree86-nvidia
 Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
@@ -186,32 +210,66 @@ Eszközök az nVidia grafikus kártyák beállításához.
 %description progs -l pl.UTF-8
 Narzędzia do zarządzania kartami graficznymi nVidia.
 
-%package -n kernel%{_alt_kernel}-video-nvidia-legacy3
-Summary:	nVidia kernel module for nVidia Architecture support
-Summary(de.UTF-8):	Das nVidia-Kern-Modul für die nVidia-Architektur-Unterstützung
-Summary(hu.UTF-8):	nVidia Architektúra támogatás Linux kernelhez.
-Summary(pl.UTF-8):	Moduł jądra dla obsługi kart graficznych nVidia
-Release:	%{rel}@%{_kernel_ver_str}
-Group:		Base/Kernel
-Requires(post,postun):	/sbin/depmod
-Requires:	dev >= 2.7.7-10
-%{?with_dist_kernel:%requires_releq_kernel}
-Requires:	%{pname} = %{epoch}:%{version}
-Provides:	X11-driver-nvidia(kernel)
-Obsoletes:	XFree86-nvidia-kernel
+%define	kernel_pkg()\
+%package -n kernel%{_alt_kernel}-video-nvidia-legacy3\
+Summary:	nVidia kernel module for nVidia Architecture support\
+Summary(de.UTF-8):	Das nVidia-Kern-Modul für die nVidia-Architektur-Unterstützung\
+Summary(hu.UTF-8):	nVidia Architektúra támogatás Linux kernelhez\
+Summary(pl.UTF-8):	Moduł jądra dla obsługi kart graficznych nVidia\
+Release:	%{rel}@%{_kernel_ver_str}\
+Group:		Base/Kernel\
+Requires(post,postun):	/sbin/depmod\
+Requires:	dev >= 2.7.7-10\
+%if %{with dist_kernel}\
+%requires_releq_kernel\
+Requires(postun):	%releq_kernel\
+%endif\
+Requires:	%{pname} = %{epoch}:%{version}\
+Provides:	X11-driver-nvidia(kernel)\
+Obsoletes:	XFree86-nvidia-kernel\
+\
+%description -n kernel%{_alt_kernel}-video-nvidia-legacy3\
+nVidia Architecture support for Linux kernel.\
+\
+%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l de.UTF-8\
+Die nVidia-Architektur-Unterstützung für den Linux-Kern.\
+\
+%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l hu.UTF-8\
+nVidia Architektúra támogatás Linux kernelhez.\
+\
+%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l pl.UTF-8\
+Obsługa architektury nVidia dla jądra Linuksa. Pakiet wymagany przez\
+sterownik nVidii dla Xorg/XFree86.\
+\
+%files -n kernel%{_alt_kernel}-video-nvidia-legacy3\
+%defattr(644,root,root,755)\
+/lib/modules/%{_kernel_ver}/misc/*.ko*\
+\
+%post	-n kernel%{_alt_kernel}-video-nvidia-legacy3\
+%depmod %{_kernel_ver}\
+\
+%postun	-n kernel%{_alt_kernel}-video-nvidia-legacy3\
+%depmod %{_kernel_ver}\
+%{nil}
 
-%description -n kernel%{_alt_kernel}-video-nvidia-legacy3
-nVidia Architecture support for Linux kernel.
+%define build_kernel_pkg()\
+cd usr/src/nv\
+ln -sf Makefile.kbuild Makefile\
+%{__make} SYSSRC=%{_kernelsrcdir} clean\
+ln -sf Makefile.kbuild Makefile\
+%{__make} SYSSRC=%{_kernelsrcdir} module\
+cd ../../..\
+%install_kernel_modules -D installed -m usr/src/nv/nvidia -d misc\
+#cat >> Makefile <<'EOF'\
+#\
+#$(obj)/nv-kernel.o: $(src)/nv-kernel.o.bin\
+#	cp $< $@\
+#EOF\
+#mv nv-kernel.o{,.bin}\
+#build_kernel_modules -m nvidia\
+%{nil}
 
-%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l de.UTF-8
-Die nVidia-Architektur-Unterstützung für den Linux-Kern.
-
-%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l hu.UTF-8
-nVidia Architektúra támogatás Linux kernelhez.
-
-%description -n kernel%{_alt_kernel}-video-nvidia-legacy3 -l pl.UTF-8
-Obsługa architektury nVidia dla jądra Linuksa. Pakiet wymagany przez
-sterownik nVidii dla Xorg/XFree86.
+%{?with_kernel:%{expand:%kpkg}}
 
 %prep
 cd %{_builddir}
@@ -229,6 +287,7 @@ rm -rf NVIDIA-Linux-x86*-%{version}-pkg*
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 install %{SOURCE5} usr/src/nv/
 install %{SOURCE6} usr/src/nv/
@@ -236,18 +295,7 @@ install -m 755 %{SOURCE7} usr/src/nv/
 echo 'EXTRA_CFLAGS += -Wno-pointer-arith -Wno-sign-compare -Wno-unused' >> usr/src/nv/Makefile.kbuild
 
 %build
-%if %{with kernel}
-cd usr/src/nv
-ln -sf Makefile.kbuild Makefile
-%{__make} SYSSRC=%{_kernelsrcdir} module
-#cat >> Makefile <<'EOF'
-#
-#$(obj)/nv-kernel.o: $(src)/nv-kernel.o.bin
-#	cp $< $@
-#EOF
-#mv nv-kernel.o{,.bin}
-#build_kernel_modules -m nvidia
-%endif
+%{?with_kernel:%{expand:%bkpkg}}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -310,7 +358,8 @@ ln -sf libXvMCNVIDIA.so.%{version} $RPM_BUILD_ROOT%{_libdir}/nvidia/libXvMCNVIDI
 %endif
 
 %if %{with kernel}
-%install_kernel_modules -m usr/src/nv/nvidia -d misc
+install -d $RPM_BUILD_ROOT
+cp -a installed/* $RPM_BUILD_ROOT
 %endif
 
 %clean
@@ -325,12 +374,6 @@ EOF
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
-
-%post	-n kernel%{_alt_kernel}-video-nvidia-legacy3
-%depmod %{_kernel_ver}
-
-%postun	-n kernel%{_alt_kernel}-video-nvidia-legacy3
-%depmod %{_kernel_ver}
 
 %if %{with userspace}
 %files
@@ -386,10 +429,4 @@ EOF
 %{_desktopdir}/nvidia-settings.desktop
 %{_mandir}/man1/nvidia-*
 %{_pixmapsdir}/nvidia-settings.png
-%endif
-
-%if %{with kernel}
-%files -n kernel%{_alt_kernel}-video-nvidia-legacy3
-%defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/misc/*.ko*
 %endif
