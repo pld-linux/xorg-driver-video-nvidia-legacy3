@@ -62,9 +62,6 @@ Source1:	http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Li
 Source2:	%{pname}-xinitrc.sh
 Source3:	10-nvidia.conf
 Source4:	10-nvidia-modules.conf
-Source5:	patches.h
-Source6:	conftest.h
-Source7:	conftest.sh
 Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-legacy-desktop.patch
 Patch2:		nvidia-blacklist-vga-pmu-registers-195.patch
