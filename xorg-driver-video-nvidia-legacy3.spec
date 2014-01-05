@@ -45,7 +45,7 @@ exit 1
 %define		kpkg	%(echo %{_build_kernels} | tr , '\\n' | while read n ; do echo %%undefine alt_kernel ; [ -z "$n" ] || echo %%define alt_kernel $n ; echo %%kernel_pkg ; done)
 %define		bkpkg	%(echo %{_build_kernels} | tr , '\\n' | while read n ; do echo %%undefine alt_kernel ; [ -z "$n" ] || echo %%define alt_kernel $n ; echo %%build_kernel_pkg ; done)
 
-%define		rel		1
+%define		rel		2
 %define		pname		xorg-driver-video-nvidia-legacy3
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
@@ -67,11 +67,8 @@ Source6:	conftest.h
 Source7:	conftest.sh
 Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-legacy-desktop.patch
-Patch2:		linux-3.10-i2c.patch
-Patch3:		linux-3.10-procfs.patch
-Patch4:		linux-3.11.patch
-Patch5:		nvidia-blacklist-vga-pmu-registers-195.patch
-Patch6:		kbuild.patch
+Patch2:		nvidia-blacklist-vga-pmu-registers-195.patch
+Patch3:		kbuild.patch
 URL:		http://www.nvidia.com/object/unix.html
 BuildRequires:	rpmbuild(macros) >= 1.678
 %{?with_dist_kernel:%{expand:%kbrs}}
@@ -276,18 +273,15 @@ cd %{_builddir}
 rm -rf NVIDIA-Linux-x86*-%{version}-pkg*
 %ifarch %{ix86}
 /bin/sh %{SOURCE0} --extract-only
-%setup -qDT -n NVIDIA-Linux-x86-%{version}-pkg0
+%setup -qDT -n NVIDIA-Linux-x86-%{version}-pkg1
 %else
 /bin/sh %{SOURCE1} --extract-only
-%setup -qDT -n NVIDIA-Linux-x86_64-%{version}-pkg0
+%setup -qDT -n NVIDIA-Linux-x86_64-%{version}-pkg2
 %endif
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
 
 install %{SOURCE5} usr/src/nv/
 install %{SOURCE6} usr/src/nv/
