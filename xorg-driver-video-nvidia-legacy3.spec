@@ -45,7 +45,7 @@ exit 1
 %define		kpkg	%(echo %{_build_kernels} | tr , '\\n' | while read n ; do echo %%undefine alt_kernel ; [ -z "$n" ] || echo %%define alt_kernel $n ; echo %%kernel_pkg ; done)
 %define		bkpkg	%(echo %{_build_kernels} | tr , '\\n' | while read n ; do echo %%undefine alt_kernel ; [ -z "$n" ] || echo %%define alt_kernel $n ; echo %%build_kernel_pkg ; done)
 
-%define		rel		5
+%define		rel		6
 %define		pname		xorg-driver-video-nvidia-legacy3
 Summary:	Linux Drivers for nVidia GeForce/Quadro Chips (173.14.xx series)
 Summary(hu.UTF-8):	Linux meghajtók nVidia GeForce/Quadro chipekhez
