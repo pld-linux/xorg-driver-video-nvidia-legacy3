@@ -83,8 +83,6 @@ Conflicts:	XFree86-OpenGL-devel <= 4.2.0-3
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreqdep	libGL.so.1 libGLcore.so.1
-
 %description
 This driver set adds improved 2D functionality to the Xorg X server as
 well as high performance OpenGL acceleration, AGP support, support for
