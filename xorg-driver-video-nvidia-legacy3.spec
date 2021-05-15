@@ -66,7 +66,7 @@ Patch0:		X11-driver-nvidia-GL.patch
 Patch1:		X11-driver-nvidia-legacy-desktop.patch
 Patch2:		nvidia-blacklist-vga-pmu-registers-195.patch
 Patch3:		linux-3.14.patch
-URL:		http://www.nvidia.com/object/unix.html
+URL:		https://www.nvidia.com/en-us/drivers/unix/
 BuildRequires:	rpmbuild(macros) >= 1.678
 %{?with_dist_kernel:%{expand:%kbrs}}
 BuildRequires:	sed >= 4.0
