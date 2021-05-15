@@ -67,6 +67,7 @@ Patch1:		X11-driver-nvidia-legacy-desktop.patch
 Patch2:		nvidia-blacklist-vga-pmu-registers-195.patch
 Patch3:		linux-3.14.patch
 URL:		https://www.nvidia.com/en-us/drivers/unix/
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.678
 %{?with_dist_kernel:%{expand:%kbrs}}
 BuildRequires:	sed >= 4.0
@@ -122,7 +123,6 @@ Starsze układy graficzne nie są obsługiwane przez ten pakiet:
 Summary:	OpenGL (GL and GLX) Nvidia libraries
 Summary(pl.UTF-8):	Biblioteki OpenGL (GL i GLX) Nvidia
 Group:		X11/Development/Libraries
-#Requires:	%{pname} = %{epoch}:%{version}-%{rel}
 Provides:	OpenGL = 2.1
 Provides:	OpenGL-GLX = 1.4
 Obsoletes:	X11-OpenGL-core < 1:7.0.0
@@ -178,11 +178,17 @@ Statyczna biblioteka XvMCNVIDIA.
 
 %package doc
 Summary:	Documentation for NVIDIA Graphics Driver
+Summary(pl.UTF-8):	Dokumentacja do sterownika graficznego NVIDIA
 Group:		Documentation
+BuildArch:	noarch
 
 %description doc
 NVIDIA Accelerated Linux Graphics Driver README and Installation
 Guide.
+
+%description doc -l pl.UTF-8
+Plik README oraz przewodnik instalacji do akcelerowanego sterownika
+graficznego NVIDIA dla Linuksa.
 
 %package progs
 Summary:	Tools for advanced control of nVidia graphic cards
