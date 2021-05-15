@@ -78,8 +78,8 @@ Requires:	xorg-xserver-server(videodrv-abi) <= 15.0
 Requires:	xorg-xserver-server(videodrv-abi) >= 2.0
 Provides:	xorg-driver-video
 Provides:	xorg-xserver-module(glx)
-Obsoletes:	XFree86-driver-nvidia
-Obsoletes:	XFree86-nvidia
+Obsoletes:	XFree86-driver-nvidia < 1.0.5336-4
+Obsoletes:	XFree86-nvidia < 1.0
 Conflicts:	XFree86-OpenGL-devel <= 4.2.0-3
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -144,9 +144,9 @@ Group:		X11/Development/Libraries
 Requires:	%{pname}-libs = %{epoch}:%{version}-%{rel}
 Provides:	OpenGL-GLX-devel = 1.4
 Provides:	OpenGL-devel = 2.1
-Obsoletes:	X11-OpenGL-devel-base
-Obsoletes:	XFree86-OpenGL-devel-base
-Obsoletes:	XFree86-driver-nvidia-devel
+Obsoletes:	X11-OpenGL-devel-base < 1:7.0.0
+Obsoletes:	XFree86-OpenGL-devel-base < 1:7.0.0
+Obsoletes:	XFree86-driver-nvidia-devel < 1.0.5336-4
 Conflicts:	XFree86-OpenGL-devel < 4.3.99.902-0.3
 
 %description devel
@@ -197,7 +197,7 @@ Summary(pl.UTF-8):	Narzędzia do zarządzania kartami graficznymi nVidia
 Group:		Applications/System
 Requires:	%{pname} = %{epoch}:%{version}
 Suggests:	pkgconfig
-Obsoletes:	XFree86-driver-nvidia-progs
+Obsoletes:	XFree86-driver-nvidia-progs < 1.0.5336-4
 
 %description progs
 Tools for advanced control of nVidia graphic cards.
@@ -224,7 +224,7 @@ Requires(postun):	%releq_kernel\
 %endif\
 Requires:	%{pname} = %{epoch}:%{version}\
 Provides:	X11-driver-nvidia(kernel)\
-Obsoletes:	XFree86-nvidia-kernel\
+Obsoletes:	XFree86-nvidia-kernel < 1.0.5336-4\
 \
 %description -n kernel%{_alt_kernel}-video-nvidia-legacy3\
 nVidia Architecture support for Linux kernel.\
