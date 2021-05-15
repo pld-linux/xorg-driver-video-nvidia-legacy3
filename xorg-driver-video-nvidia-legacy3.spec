@@ -87,37 +87,67 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 This driver set adds improved 2D functionality to the Xorg X server as
 well as high performance OpenGL acceleration, AGP support, support for
-most flat panels, and 2D multiple monitor support. Supported hardware:
-modern NVIDIA GeForce (from GeForce2 MX) and Quadro (Quadro4 and up)
-based graphics accelerators.
+most flat panels, and 2D multiple monitor support.
 
-The older graphics chips are unsupported:
-- NV1 and RIVA 128/128ZX chips are supported in the base Xorg install
-  (nv driver)
-- TNT/TNT2/GeForce 256/GeForce2 Ultra/Quadro2 are suported by -legacy
-  drivers.
+Supported hardware:
+- GeForce 5 FX series
+- GeForce 6 series
+- GeForce 7 series (excluding 7800 GT)
+- GeForce 8 series
+- GeForce 9 series (9600 GS/9600 GT/9800 GT/9800 GTX(+)/9800 GX2)
+- GeForce 200 series (GTX 260/GTX 280)
+- C class (Tesla C870 only)
+- Quadro SDI
+- Quadro Sync series (G-Sync I/G-Sync II)
+- Quadro Plex series (Model II/Model IV)
+- Quadro NVS series (NVS 285/NVS 290/NVS 440)
+- Quadro FX series (FX 330/350/370/500/540/550/560/570/600/700/1000/
+  1100/1300/1400/1500/1700/2000/3000/3400/3450/3500/3700/4000/4400/
+  4500/4500 X2/4600/4700 X2/5500/5600)
+- Quadro FX mobile series (360M/370M/570M/1600M/1700M/2700M/3600M)
 
 %description -l hu.UTF-8
 Ez a meghajtó kibővíti az Xorg X szerver 2D működését OpenGL
 gyorsítással, AGP támogatással és támogatja a több monitort.
-Támogatott hardverek: modern NVIDIA GeForce (GeForce2 MX-től) és
-Quadro (Quadro4 és újabbak) alapú grafikai gyorsítók.
 
-A régekbbi grafikus chipek nem támogatottak:
-- NV1 és RIVA 128/128ZX chipek az alap Xorg telepítéssel (nv meghajtó)
-- TNT/TNT2/GeForce 256/GeForce2 Ultra/Quadro2 a -legacy driverekkel
-  támogatottak.
+Támogatott hardverek:
+- GeForce 5 FX series
+- GeForce 6 series
+- GeForce 7 series (- 7800 GT)
+- GeForce 8 series
+- GeForce 9 series (9600 GS/9600 GT/9800 GT/9800 GTX(+)/9800 GX2)
+- GeForce 200 series (GTX 260/GTX 280)
+- C class (Tesla C870)
+- Quadro SDI
+- Quadro Sync series (G-Sync I/G-Sync II)
+- Quadro Plex series (Model II/Model IV)
+- Quadro NVS series (NVS 285/NVS 290/NVS 440)
+- Quadro FX series (FX 330/350/370/500/540/550/560/570/600/700/1000/
+  1100/1300/1400/1500/1700/2000/3000/3400/3450/3500/3700/4000/4400/
+  4500/4500 X2/4600/4700 X2/5500/5600)
+- Quadro FX mobile series (360M/370M/570M/1600M/1700M/2700M/3600M)
 
 %description -l pl.UTF-8
 Usprawnione sterowniki dla kart graficznych nVidia do serwera Xorg,
 dające wysokowydajną akcelerację OpenGL, obsługę AGP i wielu monitorów
-2D. Obsługują w miarę nowe karty NVIDIA GeForce (od wersji GeForce2
-MX) oraz Quadro (od wersji Quadro4).
+2D.
 
-Starsze układy graficzne nie są obsługiwane przez ten pakiet:
-- NV1 i RIVA 128/128ZX są obsługiwane przez sterownik nv z Xorg
-- TNT/TNT2/GeForce 256/GeForce 2 Ultra/Quadro 2 są obsługiwane przez
-  sterowniki -legacy
+Obsługują karty:
+- GeForce serii 5 FX
+- GeForce serii 6
+- GeForce serii 7 (oprócz 7800 GT)
+- GeForce serii 8
+- GeForce serii 9 (9600 GS/9600 GT/9800 GT/9800 GTX(+)/9800 GX2)
+- GeForce serii 200 (GTX 260/GTX 280)
+- C class (tylko Tesla C870)
+- Quadro SDI
+- Quadro serii Sync (G-Sync I/G-Sync II)
+- Quadro serii Plex (Model II/Model IV)
+- Quadro serii NVS (NVS 285/NVS 290/NVS 440)
+- Quadro serii FX (FX 330/350/370/500/540/550/560/570/600/700/1000/
+  1100/1300/1400/1500/1700/2000/3000/3400/3450/3500/3700/4000/4400/
+  4500/4500 X2/4600/4700 X2/5500/5600)
+- Quadro serii FX mobile (360M/370M/570M/1600M/1700M/2700M/3600M)
 
 %package libs
 Summary:	OpenGL (GL and GLX) Nvidia libraries
