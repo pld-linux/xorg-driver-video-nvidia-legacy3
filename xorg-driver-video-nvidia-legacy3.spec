@@ -386,6 +386,7 @@ EOF
 %dir %{_libdir}/nvidia
 %attr(755,root,root) %{_libdir}/nvidia/libGL.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/nvidia/libGL.so.1
+%attr(755,root,root) %{_libdir}/nvidia/libGL.so
 %attr(755,root,root) %{_libdir}/nvidia/libGLcore.so.*.*
 %attr(755,root,root) %{_libdir}/nvidia/libXvMCNVIDIA.so.*.*
 %attr(755,root,root) %{_libdir}/nvidia/libXvMCNVIDIA_dynamic.so.1
@@ -394,7 +395,6 @@ EOF
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/nvidia/libGL.so
 %attr(755,root,root) %{_libdir}/nvidia/libXvMCNVIDIA.so
 %dir %{_includedir}/GL
 %{_includedir}/GL/gl.h
@@ -415,7 +415,7 @@ EOF
 %attr(755,root,root) %{_bindir}/nvidia-settings
 %attr(755,root,root) %{_bindir}/nvidia-xconfig
 %attr(755,root,root) %{_bindir}/nvidia-bug-report.sh
-%attr(755,root,root) /etc/X11/xinit/xinitrc.d/*.sh
+%attr(755,root,root) /etc/X11/xinit/xinitrc.d/nvidia-settings.sh
 %{_desktopdir}/nvidia-settings.desktop
 %{_mandir}/man1/nvidia-*
 %{_pixmapsdir}/nvidia-settings.png
